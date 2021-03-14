@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:composition template="/_template.xhtml">
+		<ui:define name="titulo">Cadastro de Venda</ui:define>
+		
+		<ui:define name="conteudo">
+			<h:form>
+				<h:messages />
+				
+				<h:inputHidden value="#{vendaBean.venda.id}"/>
+				
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Data da Venda:" for="dataVenda" id="lbDatavenda" />
+					<h:inputText id="dataVenda" value="#{vendaBean.venda.dataVenda}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+					</h:inputText>
+					
+					<h:outputLabel value="Cliente:" for="cliente" id="lbCliente" />
+					<h:selectOneMenu value="#{vendaBean.clienteId}">
+						<f:selectItems value="#{vendaBean.listaClientes}" var="item" 
+										itemValue="#{item.id}" 
+										itemLabel="#{item.nome}" />
+					</h:selectOneMenu>
+					
+					<h:commandButton value="Novo" action="#{vendaBean.novo}"/>
+					<h:commandButton value="Gravar" action="#{vendaBean.gravar}"/>
+				</h:panelGrid>			
+			</h:form>
+			
+			<h:form>
+				<fieldset>
+					<legend>Produtos</legend>
+					<h:panelGrid columns="3">				
+						<h:outputLabel value="Produto:" id="lbProduto"/>
+						<h:selectOneMenu value="#{vendaBean.produtoId}">
+							<f:selectItems value="#{vendaBean.listaProdutos}" var="item"
+											itemValue="#{item.id}"
+											itemLabel="#{item.nome}"/>
+						</h:selectOneMenu>
+					
+						<h:commandButton value="Inserir Produto" action="#{vendaBean.inserirProduto(vendaBean.venda)}"/>
+					</h:panelGrid>
+					
+					<h:dataTable value="#{vendaBean.venda.produtos}" var="item" cellpadding="2" id="tbListaProdutos">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="ID"/>
+							</f:facet>
+							<h:outputText value="#{item.id}"/>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Nome"/>
+							</f:facet>
+							<h:outputText value="#{item.nome}"/>
+						</h:column>
+					</h:dataTable>
+				</fieldset>
+			</h:form>
+			
+			<br />
+			
+			<h:form id="frmListaVendas">
+				<h:dataTable value="#{vendaBean.listaVendas}" var="item" cellpadding="2" id="tbListaVendas">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+						
+						<h:outputText value="#{item.id}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Data da Venda" />
+						</f:facet>
+						
+						<h:outputText value="#{item.dataVenda}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Cliente" />
+						</f:facet>
+						
+						<h:outputText value="#{item.cliente.nome}" />
+							
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value=""/>
+						</f:facet>
+						
+						<h:commandLink value="Editar" action="#{vendaBean.carregar(item)}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value=""/>
+						</f:facet>
+						
+						<h:commandLink value="Remover" action="#{vendaBean.remover(item)}"/>
+					</h:column>	
+									
+				</h:dataTable>
+				
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+</html>

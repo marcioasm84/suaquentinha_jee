@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+	<ui:composition template="/_template.xhtml">
+	
+		<ui:define name="titulo">Cadastro de Cliente</ui:define>
+	
+		<ui:define name="conteudo">
+			<h:form>
+				<h:messages />
+				
+				<h:inputHidden value="#{clienteBean.cliente.id}"/>
+				
+				<h:panelGrid columns="2">					
+				
+					<h:outputLabel value="Nome:" for="nome" id="lbNome"/>
+					<h:inputText id="nome" value="#{clienteBean.cliente.nome}" validatorMessage="O Nome é obrigatório">
+						<f:validateRequired for="nome"/>
+						<f:passThroughAttribute name="required" value="true"/>
+					</h:inputText>
+					
+					<h:outputLabel value="Telefone:" for="telefone" id="lbtelefone"/>
+					<h:inputText id="telefone" value="#{clienteBean.cliente.telefone}">
+						<f:passThroughAttribute name="required" value="true"/>
+						<f:passThroughAttribute name="type" value="tel"/>						
+					</h:inputText>
+					
+					<h:outputLabel value="Email:" for="email" id="lbemail"/>
+					<h:inputText id="email" value="#{clienteBean.cliente.email}">
+						<f:passThroughAttribute name="type" value="email"/>
+						<f:passThroughAttribute name="required" value="true"/>
+					</h:inputText>
+					
+					<h:outputLabel value="Cep:" for="cep" id="lbcep"/>
+					<h:inputText id="cep" value="#{clienteBean.cliente.cep}">
+						<f:passThroughAttribute name="required" value="true"/>
+					</h:inputText>
+					
+					<h:outputLabel value="Endereço:" for="endereco" id="lbendereco"/>
+					<h:inputText id="endereco" value="#{clienteBean.cliente.endereco}">
+						<f:passThroughAttribute name="required" value="true"/>
+					</h:inputText>
+					
+					<h:commandButton value="Gravar" action="#{clienteBean.gravar}"/>
+				</h:panelGrid>			
+			</h:form>
+			<br />
+			
+			<h:form>
+				<h:dataTable value="#{clienteBean.listaClientes}" var="item" id="tbClientes" cellpadding="2" >
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+						
+						<h:outputText value="#{item.id}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						
+						<h:outputText value="#{item.nome}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Telefone" />
+						</f:facet>
+						
+						<h:outputText value="#{item.telefone}" />
+					</h:column>
+								
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Email" />
+						</f:facet>
+						
+						<h:outputText value="#{item.email}" />
+					</h:column>	
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Cep" />
+						</f:facet>
+						
+						<h:outputText value="#{item.cep}" />
+					</h:column>	
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Endereço" />
+						</f:facet>
+						
+						<h:outputText value="#{item.endereco}" />
+					</h:column>	
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value=""/>
+						</f:facet>
+						
+						<h:commandLink value="Editar" action="#{clienteBean.carregar(item)}"/>
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value=""/>
+						</f:facet>
+						
+						<h:commandLink value="Remover" action="#{clienteBean.remover(item)}"/>
+					</h:column>
+					
+				</h:dataTable>
+			</h:form>
+		</ui:define>
+		
+	</ui:composition>
+
+</html>
