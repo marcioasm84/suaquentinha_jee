@@ -1,7 +1,6 @@
 package br.com.suaquentinha.vo;
 
-import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,13 +11,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 @Entity
-public class Venda {
+public class Venda implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -27,10 +35,10 @@ public class Venda {
 	@Temporal(TemporalType.DATE)
 	private Date dataVenda;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Cliente cliente;
 	
-	@OneToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "venda_produto",
 		joinColumns = @JoinColumn(name="venda_id"),
@@ -63,5 +71,16 @@ public class Venda {
 	public void setDataVenda(Date dataVenda) {
 		this.dataVenda = dataVenda;
 	}	
+	
+	public String toString() {
+		String prod = "";
+		
+		for(Produto p : this.getProdutos()) {
+			prod += p.getId() + "-"+p.getNome() + ", ";
+		}
+		
+		
+        return "Venda: " + this.getId() + " - Produtos: " + prod;
+    }
 	
 }

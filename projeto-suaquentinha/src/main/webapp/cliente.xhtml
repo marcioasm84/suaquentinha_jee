@@ -3,120 +3,122 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:h="http://java.sun.com/jsf/html"
 		xmlns:f="http://xmlns.jcp.org/jsf/core"
-		xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+		xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui">
 
 	<ui:composition template="/_template.xhtml">
 	
-		<ui:define name="titulo">Cadastro de Cliente</ui:define>
+		<ui:define name="titulo">
+			<p:outputPanel>Cadastro de Cliente</p:outputPanel>		
+		</ui:define>
 	
 		<ui:define name="conteudo">
-			<h:form>
-				<h:messages />
+			<h:form id="frmCadastro">
+				<p:messages />
 				
 				<h:inputHidden value="#{clienteBean.cliente.id}"/>
 				
-				<h:panelGrid columns="2">					
+				<p:panelGrid columns="2">					
 				
-					<h:outputLabel value="Nome:" for="nome" id="lbNome"/>
-					<h:inputText id="nome" value="#{clienteBean.cliente.nome}" validatorMessage="O Nome é obrigatório">
+					<p:outputLabel value="Nome:" for="nome" id="lbNome"/>
+					<p:inputText id="nome" value="#{clienteBean.cliente.nome}" validatorMessage="O Nome é obrigatório">
 						<f:validateRequired for="nome"/>
-						<f:passThroughAttribute name="required" value="true"/>
-					</h:inputText>
+					</p:inputText>
 					
-					<h:outputLabel value="Telefone:" for="telefone" id="lbtelefone"/>
-					<h:inputText id="telefone" value="#{clienteBean.cliente.telefone}">
-						<f:passThroughAttribute name="required" value="true"/>
-						<f:passThroughAttribute name="type" value="tel"/>						
-					</h:inputText>
+					<p:outputLabel value="Telefone:" for="telefone" id="lbtelefone"/>
 					
-					<h:outputLabel value="Email:" for="email" id="lbemail"/>
-					<h:inputText id="email" value="#{clienteBean.cliente.email}">
-						<f:passThroughAttribute name="type" value="email"/>
-						<f:passThroughAttribute name="required" value="true"/>
-					</h:inputText>
+					<p:inputMask id="telefone" value="#{clienteBean.cliente.telefone}" mask="(99) 99999-9999">
+						<f:validateRequired/>				
+					</p:inputMask>
 					
-					<h:outputLabel value="Cep:" for="cep" id="lbcep"/>
-					<h:inputText id="cep" value="#{clienteBean.cliente.cep}">
-						<f:passThroughAttribute name="required" value="true"/>
-					</h:inputText>
+					<p:outputLabel value="Email:" for="email" id="lbemail"/>
+					<p:inputText id="email" value="#{clienteBean.cliente.email}">
+						<f:validateRequired/>
+						<f:attribute name="type" value="email"/>
+					</p:inputText>
 					
-					<h:outputLabel value="Endereço:" for="endereco" id="lbendereco"/>
-					<h:inputText id="endereco" value="#{clienteBean.cliente.endereco}">
-						<f:passThroughAttribute name="required" value="true"/>
-					</h:inputText>
+					<p:outputLabel value="Cep:" for="cep" id="lbcep"/>
+					<p:inputMask id="cep" value="#{clienteBean.cliente.cep}" mask="99999-999">
+						<f:validateRequired/>						
+					</p:inputMask>
 					
-					<h:commandButton value="Gravar" action="#{clienteBean.gravar}"/>
-				</h:panelGrid>			
+					<p:outputLabel value="Endereço:" for="endereco" id="lbendereco"/>
+					<p:inputText id="endereco" value="#{clienteBean.cliente.endereco}">
+						<f:validateRequired/>
+					</p:inputText>
+					
+					<p:commandButton value="Gravar" action="#{clienteBean.gravar}" process="@form" update="@form :frmListaClientes"/>
+				</p:panelGrid>			
 			</h:form>
 			<br />
 			
-			<h:form>
-				<h:dataTable value="#{clienteBean.listaClientes}" var="item" id="tbClientes" cellpadding="2" >
-					<h:column>
+			<h:form id="frmListaClientes">
+				<p:dataTable value="#{clienteBean.listaClientes}" var="item" id="tbClientes" cellpadding="2" >
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value="ID" />
 						</f:facet>
 						
 						<h:outputText value="#{item.id}"/>
-					</h:column>
+					</p:column>
 					
-					<h:column>
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Nome" />
 						</f:facet>
 						
 						<h:outputText value="#{item.nome}"/>
-					</h:column>
+					</p:column>
 					
-					<h:column>
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Telefone" />
 						</f:facet>
 						
 						<h:outputText value="#{item.telefone}" />
-					</h:column>
+					</p:column>
 								
-					<h:column>
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Email" />
 						</f:facet>
 						
 						<h:outputText value="#{item.email}" />
-					</h:column>	
+					</p:column>	
 					
-					<h:column>
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Cep" />
 						</f:facet>
 						
 						<h:outputText value="#{item.cep}" />
-					</h:column>	
+					</p:column>	
 					
-					<h:column>
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Endereço" />
 						</f:facet>
 						
 						<h:outputText value="#{item.endereco}" />
-					</h:column>	
+					</p:column>	
 					
-					<h:column>
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value=""/>
 						</f:facet>
 						
-						<h:commandLink value="Editar" action="#{clienteBean.carregar(item)}"/>
-					</h:column>
+						<p:commandLink value="Editar" action="#{clienteBean.carregar(item)}" update=":frmListaClientes :frmCadastro"/>
+					</p:column>
 					
-					<h:column>
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value=""/>
 						</f:facet>
 						
-						<h:commandLink value="Remover" action="#{clienteBean.remover(item)}"/>
-					</h:column>
+						<p:commandLink value="Remover" action="#{clienteBean.remover(item)}" process="@form" update="@form"/>
+					</p:column>
 					
-				</h:dataTable>
+				</p:dataTable>
 			</h:form>
 		</ui:define>
 		

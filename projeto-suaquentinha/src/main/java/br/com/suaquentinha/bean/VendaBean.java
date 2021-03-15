@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import br.com.suaquentinha.servico.ClienteServico;
@@ -14,6 +15,7 @@ import br.com.suaquentinha.vo.Produto;
 import br.com.suaquentinha.vo.Venda;
 
 @ManagedBean
+@ViewScoped
 public class VendaBean {
 	
 	private Venda venda = new Venda();
@@ -41,13 +43,17 @@ public class VendaBean {
 		venda.setCliente(c);
 		
 		System.out.println("Buscando o cliente " + venda.getCliente().getNome());
+		
+		System.out.println("VENDA A GRAVAR " + venda);
+		
+		
 		vendaServico.salvar(venda);
 		/*
 		venda = new Venda();
 		venda.setCliente(new Cliente());
 		venda.setProdutos(new ArrayList<Produto>());
 		*/
-		return "venda";
+		return "venda?faces-redirect=true";
 	}
 	
 	public String novo() {		
@@ -69,8 +75,10 @@ public class VendaBean {
 	}
 	
 	public void inserirProduto(Venda venda) {
-		System.out.println("Inserindo um produto na venda");		
+		System.out.println("Inserindo um produto na venda - Produto : " + produtoId);		
 		Produto produto = produtoServico.obter(produtoId);		
+		System.out.println("Produto encontrado: " + produto.getNome() + " - " + produto.getPreco());
+		
 		this.venda = venda;
 		this.venda.getProdutos().add(produto);
 	}

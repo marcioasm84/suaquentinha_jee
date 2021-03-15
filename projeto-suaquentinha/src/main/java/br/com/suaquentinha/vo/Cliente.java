@@ -1,15 +1,22 @@
 package br.com.suaquentinha.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Cliente {
+public class Cliente implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
@@ -21,7 +28,7 @@ public class Cliente {
 	private String cep;
 	private String endereco;
 	
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
 	private List<Venda> vendasRealizadas;
 	
 	public Long getId() {
